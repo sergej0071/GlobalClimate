@@ -25,5 +25,21 @@ namespace WeatherTools
             Int32.TryParse(temperature_info_only, out int temperature_info_digit);
             return temperature_info_digit;
         }
+        public static int GetHumidity_ZP()
+        {
+            string info = new WebClient().DownloadString("http://api.weatherstack.com/current?access_key=1e93a9632d8f45265a3cd3949733a911&query=Zaporizhzhya");
+
+            string humidity_info_spoiled = info.Substring(info.IndexOf("\"humidity\":", 0) + "\"humidity\":".Length, 3);
+
+            string humidity_info_only = "";
+            for (int i = 0; i < humidity_info_spoiled.Length; i++)
+            {
+                if (Char.IsDigit(humidity_info_spoiled[i]) || humidity_info_spoiled[i] == '-')
+                    humidity_info_only += humidity_info_spoiled[i];
+            }
+
+            Int32.TryParse(humidity_info_only, out int humidity_info_digit);
+            return humidity_info_digit;
+        }
     }
 }
